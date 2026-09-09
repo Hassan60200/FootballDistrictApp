@@ -1,0 +1,39 @@
+services:
+    php:
+        build:
+            context: ./docker/php
+        volumes:
+            - ./:/var/www/html
+        environment:
+            - APP_ENV=dev
+            - DATABASE_URL=mysql://app:app@db:3306/ddd?serverVersion=8.0
+
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www/html
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - php
+
+    db:
+        image: mysql:8.0
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ddd
+            MYSQL_USER: app
+            MYSQL_PASSWORD: app
+        ports:
+            - "3306:3306"
+        volumes:
+            - db_data:/var/lib/mysql
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+
+volumes:
+    db_data:

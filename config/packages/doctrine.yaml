@@ -1,0 +1,70 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '16'
+
+        profiling_collect_backtrace: '%kernel.debug%'
+    orm:
+        validate_xml_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        identity_generation_preferences:
+            Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
+        auto_mapping: false
+        mappings:
+            Admin:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Admin/Domain'
+                prefix: 'App\Admin\Domain'
+                alias: Admin
+            Coach:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Coach/Domain'
+                prefix: 'App\Coach\Domain'
+                alias: Coach
+            Player:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Player/Domain'
+                prefix: 'App\Player\Domain'
+                alias: Player
+            Team:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Team/Domain'
+                prefix: 'App\Team\Domain'
+                alias: Team
+            Match:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/Match/Domain'
+                prefix: 'App\Match\Domain'
+                alias: Match
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
