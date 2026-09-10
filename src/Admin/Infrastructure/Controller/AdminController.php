@@ -4,6 +4,8 @@ namespace App\Admin\Infrastructure\Controller;
 
 use App\Admin\Application\Handler\DeactivateAdmin\DeactivateAdminCommand;
 use App\Admin\Application\Handler\DeactivateAdmin\DeactivateAdminHandler;
+use App\Admin\Application\Handler\ListAdmins\ListAdminsHandler;
+use App\Admin\Application\Handler\ListAdmins\ListAdminsQuery;
 use App\Admin\Application\Handler\PromoteUserToAdmin\PromoteUserToAdminCommand;
 use App\Admin\Application\Handler\PromoteUserToAdmin\PromoteUserToAdminHandler;
 use App\Admin\Domain\AdminId;
@@ -35,5 +37,23 @@ final class AdminController extends AbstractController {
         ));
 
         return $this->json(null, 204);
+    }
+
+
+    #[Route('/list', methods: ['GET'])]
+    public function list(ListAdminsHandler $handler): JsonResponse
+    {
+        $admins = $handler->handle(new ListAdminsQuery());
+
+        $data = array_map(function ($admin) {
+            return [
+                'id' => $admin->getAdminId()->toString(),
+                'isActive' => $admin->isActive(),
+                'roles' => $admin->getRoles(),
+            ];
+        }, $admins);
+
+        return $this->json($data, 200);
+
     }
 }
