@@ -22,3 +22,6 @@ services:
     App\Admin\Domain\Repository\AdminRepositoryInterface:
         alias: App\Admin\Infrastructure\Repository\DoctrineAdminRepository
 
+    App\Player\Domain\Repository\PlayerRepositoryInterface:
+        alias: App\Player\Infrastructure\Repository\DoctrinePlayerRepository
+

@@ -9,21 +9,20 @@ use App\Admin\Application\Handler\ListAdmins\ListAdminsQuery;
 use App\Admin\Application\Handler\PromoteUserToAdmin\PromoteUserToAdminCommand;
 use App\Admin\Application\Handler\PromoteUserToAdmin\PromoteUserToAdminHandler;
 use App\Admin\Domain\AdminId;
+use App\Admin\Infrastructure\Controller\Request\PromoteAdminRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/admins')]
 final class AdminController extends AbstractController {
 
     #[Route('', methods: ['POST'])]
-    public function promote(Request $request, PromoteUserToAdminHandler $handler): JsonResponse
+    public function promote(#[MapRequestPayload] PromoteAdminRequest $request, PromoteUserToAdminHandler $handler): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-
         $adminId = $handler->handle(new PromoteUserToAdminCommand(
-            roles: $data['roles'],
+            roles: $request->roles,
         ));
 
         return $this->json(['id' => $adminId->toString()], 201);

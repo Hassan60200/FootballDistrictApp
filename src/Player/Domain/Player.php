@@ -2,6 +2,7 @@
 
 namespace App\Player\Domain;
 
+use App\Player\Domain\Exception\PlayerAlreadyDeactivatedException;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -56,6 +57,14 @@ final class Player
         Position $position,
     ): self {
         return new self(PlayerId::generate(), $firstName, $lastName, $age, $email, $position, true);
+    }
+
+    public function deactivate(): void
+    {
+        if (!$this->isActive) {
+            throw PlayerAlreadyDeactivatedException::withId($this->id);
+        }
+        $this->isActive = false;
     }
 
     public function getId(): PlayerId { return $this->id; }

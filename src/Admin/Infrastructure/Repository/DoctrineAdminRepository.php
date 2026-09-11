@@ -29,6 +29,6 @@ final class DoctrineAdminRepository extends ServiceEntityRepository implements A
 
     public function findAll(): array
     {
-        return $this->findAll();
+        return parent::findAll();
     }
 }
