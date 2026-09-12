@@ -4,6 +4,7 @@ doctrine:
 
         types:
             player_email: App\Player\Infrastructure\Doctrine\EmailType
+            coach_email: App\Coach\Infrastructure\Doctrine\EmailType
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
