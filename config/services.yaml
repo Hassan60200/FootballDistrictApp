@@ -25,3 +25,6 @@ services:
     App\Player\Domain\Repository\PlayerRepositoryInterface:
         alias: App\Player\Infrastructure\Repository\DoctrinePlayerRepository
 
+    App\Match\Domain\Repository\MatchRepositoryInterface:
+        alias: App\Match\Infrastructure\Repository\DoctrineMatchRepository
+
