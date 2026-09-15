@@ -28,3 +28,5 @@ services:
     App\Match\Domain\Repository\MatchRepositoryInterface:
         alias: App\Match\Infrastructure\Repository\DoctrineMatchRepository
 
+    App\Team\Domain\Repository\MatchRepositoryInterface:
+        alias: App\Team\Infrastructure\Repository\DoctrineTeamRepository

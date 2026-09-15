@@ -31,4 +31,14 @@ final class DoctrineMatchRepository extends ServiceEntityRepository implements M
     {
         return parent::findAll();
     }
+
+    public function findByTeam(TeamId $teamId): array
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.homeClub.teamId = :teamId')
+            ->orWhere('m.awayClub.teamId = :teamId')
+            ->setParameter('teamId', $teamId->toString())
+            ->getQuery()
+            ->getResult();
+    }
 }
