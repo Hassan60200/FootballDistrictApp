@@ -4,9 +4,14 @@ namespace App\Match\Infrastructure\Controller;
 
 use App\Match\Application\Handler\ScheduleMatch\ScheduleMatchCommand;
 use App\Match\Application\Handler\ScheduleMatch\ScheduleMatchHandler;
+use App\Match\Application\Handler\SummonPlayer\SummonPlayerCommand;
+use App\Match\Application\Handler\SummonPlayer\SummonPlayerHandler;
 use App\Match\Application\Query\ListMatches\ListMatchesHandler;
 use App\Match\Application\Query\ListMatches\ListMatchesQuery;
+use App\Match\Domain\MatchId;
 use App\Match\Infrastructure\Controller\Request\ScheduleMatchRequest;
+use App\Match\Infrastructure\Controller\Request\SummonPlayerRequest;
+use App\Player\Domain\PlayerId;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -58,5 +63,19 @@ final class MatchController extends AbstractController
         }, $matches);
 
         return $this->json($data, 200);
+    }
+
+    #[Route('/{id}/summon', methods: ['POST'])]
+    public function summon(
+        string $id,
+        #[MapRequestPayload] SummonPlayerRequest $request,
+        SummonPlayerHandler $handler,
+    ): JsonResponse {
+        $handler->handle(new SummonPlayerCommand(
+            matchId: MatchId::fromString($id),
+            playerId: PlayerId::fromString($request->playerId),
+        ));
+
+        return $this->json(null, 204);
     }
 }

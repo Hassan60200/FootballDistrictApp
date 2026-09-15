@@ -41,4 +41,17 @@ final class DoctrineMatchRepository extends ServiceEntityRepository implements M
             ->getQuery()
             ->getResult();
     }
+
+    public function findByWeek(\DateTimeImmutable $weekOf): array
+    {
+        $startOfWeek = $weekOf->modify('monday this week')->setTime(0, 0);
+        $endOfWeek = $weekOf->modify('sunday this week')->setTime(23, 59, 59);
+
+        return $this->createQueryBuilder('m')
+            ->where('m.scheduledAt.value BETWEEN :start AND :end')
+            ->setParameter('start', $startOfWeek)
+            ->setParameter('end', $endOfWeek)
+            ->getQuery()
+            ->getResult();
+    }
 }
