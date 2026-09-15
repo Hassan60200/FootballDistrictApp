@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Coach\Infrastructure\Doctrine;
+namespace App\Match\Infrastructure\Doctrine;
 
-use App\Coach\Domain\Email;
+use App\Match\Domain\MatchId;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
-final class EmailType extends Type
+final class MatchIdType extends Type
 {
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return 'VARCHAR(255)';
+        return 'VARCHAR(36)';
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Email
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?MatchId
     {
-        return $value === null ? null : Email::fromString($value);
+        return $value === null ? null : MatchId::fromString($value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
@@ -25,6 +25,6 @@ final class EmailType extends Type
 
     public function getName(): string
     {
-        return 'coach_email';
+        return 'match_id';
     }
 }

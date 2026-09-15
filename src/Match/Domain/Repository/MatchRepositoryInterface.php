@@ -2,9 +2,9 @@
 
 namespace App\Match\Domain\Repository;
 
-
 use App\Match\Domain\FootballMatch;
 use App\Match\Domain\MatchId;
+use App\Team\Domain\TeamId;
 
 interface MatchRepositoryInterface
 {
@@ -12,5 +12,5 @@ interface MatchRepositoryInterface
     public function save(FootballMatch $match): void;
     public function findAll(): array;
 
-    public function findByTeam($teamId): array;
+    public function findByTeam(TeamId $teamId): array;
 }

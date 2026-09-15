@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 final class Player
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'player_id', unique: true)]
     private readonly PlayerId $id;
 
     #[ORM\Column(type: 'string')]

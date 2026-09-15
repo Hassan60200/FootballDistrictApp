@@ -7,7 +7,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 final class PromoteAdminRequest
 {
     public function __construct(
-        #[Assert\NotBlank]
-        public readonly string $roles,
+        #[Assert\Count(min: 1)]
+        #[Assert\All([new Assert\NotBlank()])]
+        public readonly array $roles,
     ) {}
 }

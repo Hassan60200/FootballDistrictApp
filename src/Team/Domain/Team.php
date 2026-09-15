@@ -2,15 +2,14 @@
 
 namespace App\Team\Domain;
 
-
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'teams')]
-final class Team {
-
+final class Team
+{
     #[ORM\Id]
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'team_id', unique: true)]
     private readonly TeamId $id;
 
     #[ORM\Column(type: 'string')]
@@ -35,4 +34,3 @@ final class Team {
     public function getName(): string { return $this->name; }
     public function getCategory(): TeamCategory { return $this->category; }
 }
-

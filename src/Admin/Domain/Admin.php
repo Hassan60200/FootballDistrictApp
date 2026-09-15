@@ -10,19 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
 final class Admin
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'admin_id', unique: true)]
     private readonly AdminId $adminId;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isActive;
 
-    #[ORM\Column(type: 'string')]
-    private readonly string $roles;
+    #[ORM\Column(type: 'json')]
+    private readonly array $roles;
 
     private function __construct(
         AdminId $adminId,
         bool    $isActive,
-        string  $roles,
+        array   $roles,
     )
     {
         $this->adminId = $adminId;
@@ -30,7 +30,7 @@ final class Admin
         $this->roles = $roles;
     }
 
-    public static function promote(string $roles): self
+    public static function promote(array $roles): self
     {
         return new self(AdminId::generate(), true, $roles);
     }
@@ -53,7 +53,7 @@ final class Admin
         return $this->isActive;
     }
 
-    public function getRoles(): string
+    public function getRoles(): array
     {
         return $this->roles;
     }

@@ -2,14 +2,15 @@
 
 namespace App\Coach\Domain;
 
+use App\Coach\Domain\Exception\CoachAlreadyDeactivatedException;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'coachs')]
+#[ORM\Table(name: 'coaches')]
 final class Coach
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'coach_id', unique: true)]
     private readonly CoachId $id;
 
     #[ORM\Column(type: 'string')]
@@ -48,6 +49,9 @@ final class Coach
 
     public function deactivate(): void
     {
+        if (!$this->isActive) {
+            throw CoachAlreadyDeactivatedException::withId($this->id);
+        }
         $this->isActive = false;
     }
 

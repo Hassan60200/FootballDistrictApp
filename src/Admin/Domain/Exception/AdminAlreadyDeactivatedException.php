@@ -8,6 +8,6 @@ final class AdminAlreadyDeactivatedException extends \DomainException
 {
     public static function withId(AdminId $id): self
     {
-        return new self("Admin with id \"{$id->toString()}\" not found");
+        return new self("Admin with id \"{$id->toString()}\" is already deactivated");
     }
 }

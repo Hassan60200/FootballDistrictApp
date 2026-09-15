@@ -2,7 +2,6 @@
 
 namespace App\Admin\Domain\Exception;
 
-
 use App\Admin\Domain\AdminId;
 
 final class AdminNotFoundException extends \DomainException

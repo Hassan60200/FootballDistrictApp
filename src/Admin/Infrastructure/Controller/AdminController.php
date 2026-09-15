@@ -16,8 +16,8 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/admins')]
-final class AdminController extends AbstractController {
-
+final class AdminController extends AbstractController
+{
     #[Route('', methods: ['POST'])]
     public function promote(#[MapRequestPayload] PromoteAdminRequest $request, PromoteUserToAdminHandler $handler): JsonResponse
     {
@@ -53,6 +53,5 @@ final class AdminController extends AbstractController {
         }, $admins);
 
         return $this->json($data, 200);
-
     }
 }

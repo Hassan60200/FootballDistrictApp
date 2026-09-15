@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 final class FootballMatch
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\Column(type: 'match_id', unique: true)]
     private readonly MatchId $id;
 
     #[ORM\Column(type: 'string')]

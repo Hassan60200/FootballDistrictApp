@@ -2,20 +2,20 @@
 
 namespace App\Coach\Infrastructure\Doctrine;
 
-use App\Coach\Domain\Email;
+use App\Coach\Domain\CoachId;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
-final class EmailType extends Type
+final class CoachIdType extends Type
 {
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        return 'VARCHAR(255)';
+        return 'VARCHAR(36)';
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Email
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?CoachId
     {
-        return $value === null ? null : Email::fromString($value);
+        return $value === null ? null : CoachId::fromString($value);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
@@ -25,6 +25,6 @@ final class EmailType extends Type
 
     public function getName(): string
     {
-        return 'coach_email';
+        return 'coach_id';
     }
 }

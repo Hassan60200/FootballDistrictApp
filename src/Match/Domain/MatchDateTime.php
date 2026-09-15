@@ -2,9 +2,13 @@
 
 namespace App\Match\Domain;
 
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Embeddable]
 final class MatchDateTime
 {
     private function __construct(
+        #[ORM\Column(type: 'datetime_immutable')]
         private readonly \DateTimeImmutable $value,
     ) {}
 

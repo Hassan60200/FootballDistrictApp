@@ -5,6 +5,7 @@ namespace App\Match\Infrastructure\Repository;
 use App\Match\Domain\FootballMatch;
 use App\Match\Domain\MatchId;
 use App\Match\Domain\Repository\MatchRepositoryInterface;
+use App\Team\Domain\TeamId;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,7 +15,6 @@ final class DoctrineMatchRepository extends ServiceEntityRepository implements M
     {
         parent::__construct($registry, FootballMatch::class);
     }
-
 
     public function findById(MatchId $id): ?FootballMatch
     {
