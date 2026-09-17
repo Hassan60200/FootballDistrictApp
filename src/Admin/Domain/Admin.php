@@ -2,7 +2,6 @@
 
 namespace App\Admin\Domain;
 
-use App\Admin\Domain\Email\Email;
 use App\Admin\Domain\Exception\AdminAlreadyDeactivatedException;
 use Doctrine\ORM\Mapping as ORM;
 

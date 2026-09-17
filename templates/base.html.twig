@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}DDD Football{% endblock %}</title>
     <link rel="icon" href="data:,">
     {% block stylesheets %}
@@ -10,9 +11,104 @@
     {% block javascripts %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     {% endblock %}
+    <style>
+        :root {
+            --club-primary: #1B2A4A;
+            --club-secondary: #8A99A8;
+        }
+        body {
+            background-color: #F4F6F8;
+        }
+        .navbar {
+            background-color: var(--club-primary) !important;
+        }
+        .navbar .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+        .navbar .nav-link:hover {
+            color: #ffffff !important;
+        }
+        .navbar-brand {
+            color: #ffffff !important;
+            font-weight: 700;
+        }
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-item:active {
+            background-color: var(--club-primary);
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-4">
+<nav class="navbar navbar-expand-lg navbar-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path('admin_web_list') }}">CA Venette</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Administrateurs
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{{ path('admin_web_list') }}">Liste des admins</a></li>
+                        <li><a class="dropdown-item" href="{{ path('admin_web_promote') }}">Nouvel admin</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Joueurs
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Liste des joueurs</a></li>
+                        <li><a class="dropdown-item" href="#">Nouveau joueur</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Coachs
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Liste des coachs</a></li>
+                        <li><a class="dropdown-item" href="#">Nouveau coach</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Équipes
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Liste des équipes</a></li>
+                        <li><a class="dropdown-item" href="#">Nouvelle équipe</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Matchs
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Calendrier</a></li>
+                        <li><a class="dropdown-item" href="#">Résultats</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
     {% block body %}{% endblock %}
 </div>
 </body>

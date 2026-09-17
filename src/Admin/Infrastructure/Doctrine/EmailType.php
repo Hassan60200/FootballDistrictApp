@@ -2,7 +2,7 @@
 
 namespace App\Admin\Infrastructure\Doctrine;
 
-use App\Admin\Domain\Email\Email;
+use App\Admin\Domain\Email;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 

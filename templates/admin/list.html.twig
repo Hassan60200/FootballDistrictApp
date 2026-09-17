@@ -1,0 +1,76 @@
+{# templates/admin/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Administrateurs{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0" style="color: #1B2A4A;">Administrateurs</h1>
+            <p class="text-muted mb-0">{{ admins|length }} administrateur{{ admins|length > 1 ? 's' : '' }}</p>
+        </div>
+        <a href="{{ path('admin_web_promote') }}" class="btn" style="background-color: #1B2A4A; color: white;">
+            + Nouvel administrateur
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr style="background-color: #F4F6F8;">
+                    <th class="ps-4 py-3 text-uppercase small text-muted">Administrateur</th>
+                    <th class="py-3 text-uppercase small text-muted">Email</th>
+                    <th class="py-3 text-uppercase small text-muted">Rôles</th>
+                    <th class="py-3 text-uppercase small text-muted">Statut</th>
+                    <th class="pe-4 py-3"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for admin in admins %}
+                    <tr>
+                        <td class="ps-4 py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div
+                                    class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+                                    style="width: 40px; height: 40px; background-color: #1B2A4A; font-size: 0.9rem;">
+                                    {{ admin.firstName|slice(0, 1)|upper }}{{ admin.lastName|slice(0, 1)|upper }}
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">{{ admin.firstName }} {{ admin.lastName }}</div>
+                                    <div class="small text-muted">ID: {{ admin.adminId.toString|slice(0, 8) }}...</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3">{{ admin.email.toString }}</td>
+                        <td class="py-3">
+                            {% for role in admin.roles %}
+                                <span class="badge rounded-pill me-1"
+                                      style="background-color: #8A99A8; color: white; font-weight: 500;">
+                                {{ role|replace({'ROLE_': ''})|lower|capitalize }}
+                            </span>
+                            {% endfor %}
+                        </td>
+                        <td class="py-3">
+                            {% if admin.active %}
+                                <span class="badge rounded-pill" style="background-color: #2E8B57;">Actif</span>
+                            {% else %}
+                                <span class="badge rounded-pill bg-secondary">Désactivé</span>
+                            {% endif %}
+                        </td>
+                        <td class="pe-4 py-3 text-end">
+                            <button class="btn btn-sm btn-outline-secondary">Gérer</button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            Aucun administrateur pour le moment.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Domain\Email;
+namespace App\Admin\Domain;
 
 use App\Admin\Domain\Exception\InvalidEmailException;
 

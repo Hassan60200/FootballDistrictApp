@@ -2,6 +2,8 @@
 
 namespace App\Admin\Infrastructure\Controller\Web;
 
+use App\Admin\Application\Handler\ListAdmins\ListAdminsHandler;
+use App\Admin\Application\Handler\ListAdmins\ListAdminsQuery;
 use App\Admin\Application\Handler\PromoteUserToAdmin\PromoteUserToAdminCommand;
 use App\Admin\Application\Handler\PromoteUserToAdmin\PromoteUserToAdminHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,6 +41,16 @@ final class AdminWebController extends AbstractController
         return $this->render('admin/promote.html.twig', [
             'success' => $success,
             'error' => $error,
+        ]);
+    }
+
+    #[Route('/admin/list', name: 'admin_web_list', methods: ['GET'])]
+    public function listAdmin(ListAdminsHandler $handler): Response
+    {
+        $admins = $handler->handle(new ListAdminsQuery());
+
+        return $this->render('admin/list.html.twig', [
+            'admins' => $admins
         ]);
     }
 }
