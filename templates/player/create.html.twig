@@ -1,0 +1,51 @@
+{# templates/player/create.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau joueur{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4" style="color: #1B2A4A;">Nouveau joueur</h1>
+
+    <form method="post" class="col-md-6">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="age" class="form-label">Âge</label>
+            <input type="number" class="form-control" id="age" name="age" min="14" max="60" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="position" class="form-label">Poste</label>
+            <select class="form-select" id="position" name="position" required>
+                <option value="" disabled selected>Choisir un poste</option>
+                <option value="goalkeeper">Gardien</option>
+                <option value="defender">Défenseur</option>
+                <option value="midfielder">Milieu</option>
+                <option value="forward">Attaquant</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Créer</button>
+    </form>
+
+    {% if success %}
+        <div class="alert alert-success mt-3">Joueur créé avec l'id : {{ success }}</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+{% endblock %}

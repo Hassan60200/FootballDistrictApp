@@ -8,7 +8,8 @@ final class PlayerId
 {
     private function __construct(
         private readonly Uuid $value,
-    ) {
+    )
+    {
     }
 
     public static function generate(): self
@@ -28,6 +29,11 @@ final class PlayerId
 
     public function toString(): string
     {
-        return (string) $this->value;
+        return (string)$this->value;
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }
