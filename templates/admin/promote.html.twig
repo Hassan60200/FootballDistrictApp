@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un administrateur{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">Créer un administrateur</h1>
+
+    <form method="post" action="{{ path('admin_web_promote') }}" class="col-md-6">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+
+        <fieldset class="mb-3">
+            <legend class="col-form-label">Rôles</legend>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="roles[]" value="ROLE_ADMIN" id="roleAdmin">
+                <label class="form-check-label" for="roleAdmin">Admin</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="roles[]" value="ROLE_SUPER_ADMIN" id="roleSuperAdmin">
+                <label class="form-check-label" for="roleSuperAdmin">Super Admin</label>
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary">Créer</button>
+    </form>
+
+    {% if success %}
+        <div class="alert alert-success mt-3">Admin créé avec l'id : {{ success }}</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+{% endblock %}

@@ -3,6 +3,7 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
 
         types:
+            admin_email: App\Admin\Infrastructure\Doctrine\EmailType
             admin_id: App\Admin\Infrastructure\Doctrine\AdminIdType
             player_id: App\Player\Infrastructure\Doctrine\PlayerIdType
             team_id: App\Team\Infrastructure\Doctrine\TeamIdType

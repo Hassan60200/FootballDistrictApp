@@ -18,7 +18,7 @@ final class DoctrineAdminRepository extends ServiceEntityRepository implements A
 
     public function findById(AdminId $id): ?Admin
     {
-        return $this->find($id->toString());
+        return $this->find($id);
     }
 
     public function save(Admin $admin): void

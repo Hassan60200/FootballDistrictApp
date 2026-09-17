@@ -10,5 +10,12 @@ final class PromoteAdminRequest
         #[Assert\Count(min: 1)]
         #[Assert\All([new Assert\NotBlank()])]
         public readonly array $roles,
+        #[Assert\NotBlank]
+        public readonly ?string $firstName = null,
+        #[Assert\NotBlank]
+        public readonly ?string $lastName = null,
+        #[Assert\NotBlank]
+        #[Assert\Email]
+        public readonly ?string $email = null,
     ) {}
 }

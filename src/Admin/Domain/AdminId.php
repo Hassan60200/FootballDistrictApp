@@ -30,4 +30,9 @@ final class AdminId
     {
         return (string) $this->value;
     }
+
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
 }

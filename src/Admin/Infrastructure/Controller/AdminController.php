@@ -22,6 +22,9 @@ final class AdminController extends AbstractController
     public function promote(#[MapRequestPayload] PromoteAdminRequest $request, PromoteUserToAdminHandler $handler): JsonResponse
     {
         $adminId = $handler->handle(new PromoteUserToAdminCommand(
+            firstName: $request->firstName,
+            lastName: $request->lastName,
+            email: $request->email,
             roles: $request->roles,
         ));
 
