@@ -28,12 +28,18 @@
                     <tr>
                         <td class="ps-4 py-3 fw-semibold">{{ team.name }}</td>
                         <td class="py-3">
-                        <span class="badge rounded-pill" style="background-color: #8A99A8; color: white; font-weight: 500;">
+                        <span class="badge rounded-pill"
+                              style="background-color: #8A99A8; color: white; font-weight: 500;">
                             {{ team.category.value|upper }}
                         </span>
                         </td>
                         <td class="pe-4 py-3 text-end">
-                            <button class="btn btn-sm btn-outline-secondary">Gérer</button>
+                            <a href="{{ path('team_web_edit', {id: team.id.toString}) }}"
+                               class="btn btn-sm btn-outline-secondary">Modifier</a>
+                            <form method="post" action="{{ path('team_web_delete', {id: team.id.toString}) }}"
+                                  class="d-inline" onsubmit="return confirm('Supprimer cette équipe ?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
                         </td>
                     </tr>
                 {% else %}
