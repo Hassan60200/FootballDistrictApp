@@ -33,6 +33,6 @@ final class TeamId
 
     public function __toString()
     {
-        return $this->value;
+        return $this->value->toString();
     }
 }

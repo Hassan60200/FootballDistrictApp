@@ -17,7 +17,7 @@ final class DoctrineTeamRepository extends ServiceEntityRepository implements Te
 
     public function findById(TeamId $id): ?Team
     {
-        return $this->find($id->toString());
+        return $this->find($id);
     }
 
     public function save(Team $team): void
@@ -29,5 +29,11 @@ final class DoctrineTeamRepository extends ServiceEntityRepository implements Te
     public function findAll(): array
     {
         return parent::findAll();
+    }
+
+    public function delete(Team $team): void
+    {
+        $this->getEntityManager()->remove($team);
+        $this->getEntityManager()->flush();
     }
 }

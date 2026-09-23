@@ -13,10 +13,10 @@ final class Team
     private readonly TeamId $id;
 
     #[ORM\Column(type: 'string')]
-    private readonly string $name;
+    private string $name;
 
     #[ORM\Column(type: 'string', enumType: TeamCategory::class)]
-    private readonly TeamCategory $category;
+    private TeamCategory $category;
 
     private function __construct(TeamId $id, string $name, TeamCategory $category)
     {
@@ -43,5 +43,11 @@ final class Team
     public function getCategory(): TeamCategory
     {
         return $this->category;
+    }
+
+    public function rename(string $name, TeamCategory $category): void
+    {
+        $this->name = $name;
+        $this->category = $category;
     }
 }
