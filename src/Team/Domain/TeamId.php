@@ -30,4 +30,9 @@ final class TeamId
     {
         return (string) $this->value;
     }
+
+    public function __toString()
+    {
+        return $this->value;
+    }
 }

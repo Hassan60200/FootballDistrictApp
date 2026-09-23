@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Équipes{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0" style="color: #1B2A4A;">Équipes</h1>
+            <p class="text-muted mb-0">{{ teams|length }} équipe{{ teams|length > 1 ? 's' : '' }}</p>
+        </div>
+        <a href="{{ path('team_web_create') }}" class="btn" style="background-color: #1B2A4A; color: white;">
+            + Nouvelle équipe
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr style="background-color: #F4F6F8;">
+                    <th class="ps-4 py-3 text-uppercase small text-muted">Nom</th>
+                    <th class="py-3 text-uppercase small text-muted">Catégorie</th>
+                    <th class="pe-4 py-3"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for team in teams %}
+                    <tr>
+                        <td class="ps-4 py-3 fw-semibold">{{ team.name }}</td>
+                        <td class="py-3">
+                        <span class="badge rounded-pill" style="background-color: #8A99A8; color: white; font-weight: 500;">
+                            {{ team.category.value|upper }}
+                        </span>
+                        </td>
+                        <td class="pe-4 py-3 text-end">
+                            <button class="btn btn-sm btn-outline-secondary">Gérer</button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center py-5 text-muted">
+                            Aucune équipe pour le moment.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

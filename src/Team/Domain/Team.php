@@ -30,7 +30,18 @@ final class Team
         return new self(TeamId::generate(), $name, $category);
     }
 
-    public function getId(): TeamId { return $this->id; }
-    public function getName(): string { return $this->name; }
-    public function getCategory(): TeamCategory { return $this->category; }
+    public function getId(): TeamId
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getCategory(): TeamCategory
+    {
+        return $this->category;
+    }
 }
