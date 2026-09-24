@@ -54,7 +54,10 @@
                             {% endif %}
                         </td>
                         <td class="pe-4 py-3 text-end">
-                            <button class="btn btn-sm btn-outline-secondary">Gérer</button>
+                            <a href="{{ path('player_web_edit', {id: player.id.toString}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                            <form method="post" action="{{ path('player_web_delete', {id: player.id.toString}) }}" class="d-inline" onsubmit="return confirm('Supprimer ce joueur ?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
                         </td>
                     </tr>
                 {% else %}

@@ -1,0 +1,50 @@
+{# templates/player/edit.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ player.firstName }} {{ player.lastName }}{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4" style="color: #1B2A4A;">Modifier le joueur</h1>
+
+    <form method="post" class="col-md-6">
+        <div class="mb-3">
+            <label for="firstName" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" value="{{ player.firstName }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" value="{{ player.lastName }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="age" class="form-label">Âge</label>
+            <input type="number" class="form-control" id="age" name="age" value="{{ player.age }}" min="14" max="60" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ player.email.toString }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="position" class="form-label">Poste</label>
+            <select class="form-select" id="position" name="position" required>
+                <option value="goalkeeper" {{ player.position.value == 'goalkeeper' ? 'selected' }}>Gardien</option>
+                <option value="defender" {{ player.position.value == 'defender' ? 'selected' }}>Défenseur</option>
+                <option value="midfielder" {{ player.position.value == 'midfielder' ? 'selected' }}>Milieu</option>
+                <option value="forward" {{ player.position.value == 'forward' ? 'selected' }}>Attaquant</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Enregistrer</button>
+    </form>
+
+    {% if success %}
+        <div class="alert alert-success mt-3">Joueur mis à jour.</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+{% endblock %}
