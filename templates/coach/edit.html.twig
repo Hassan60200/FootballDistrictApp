@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ coach.firstName }} {{ coach.lastName }}{% endblock %}
+
+{% block body %}
+<h1 class="mb-4" style="color: #1B2A4A;">Modifier le coach</h1>
+
+<form method="post" class="col-md-6">
+    <div class="mb-3">
+        <label for="firstName" class="form-label">Prénom</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" value="{{ coach.firstName }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" value="{{ coach.lastName }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" value="{{ coach.email.toString }}" required>
+    </div>
+
+    <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Enregistrer</button>
+</form>
+
+{% if success %}
+    <div class="alert alert-success mt-3">Coach mis à jour.</div>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% endblock %}
