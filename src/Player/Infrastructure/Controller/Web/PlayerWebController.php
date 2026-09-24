@@ -4,9 +4,8 @@ namespace App\Player\Infrastructure\Controller\Web;
 
 use App\Player\Application\Handler\ListPlayers\ListPlayersHandler;
 use App\Player\Application\Handler\ListPlayers\ListPlayersQuery;
-use App\Player\Application\Handler\RegisterPlayer\RegisterPlayerCommand;
 use App\Player\Application\Handler\RegisterPlayer\RegisterPlayerHandler;
-use App\Player\Domain\Position;
+use App\Team\Application\Handler\CreateTeam\CreateTeamCommand;
 use DomainException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,21 +22,12 @@ class PlayerWebController extends AbstractController
         $error = null;
 
         if ($request->isMethod('POST')) {
-            $firstName = $request->request->get('firstName');
-            $lastName = $request->request->get('lastName');
-            $email = $request->request->get('email');
-            $age = (int) $request->request->get('age');
-            $position = Position::from($request->request->get('position'));
-
             try {
-                $playerId = $handler->handle(new RegisterPlayerCommand(
-                    firstName: $firstName,
-                    lastName: $lastName,
-                    age: $age,
-                    email: $email,
-                    position: $position,
+                $teamId = $handler->handle(new CreateTeamCommand(
+                    name: $request->name,
+                    category: $request->category,
                 ));
-                $success = $playerId->toString();
+                $success = $teamId->toString();
             } catch (DomainException $e) {
                 $error = $e->getMessage();
             }
