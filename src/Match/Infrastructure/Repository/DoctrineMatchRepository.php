@@ -18,7 +18,7 @@ final class DoctrineMatchRepository extends ServiceEntityRepository implements M
 
     public function findById(MatchId $id): ?FootballMatch
     {
-        return $this->find($id->toString());
+        return $this->find($id);
     }
 
     public function save(FootballMatch $match): void

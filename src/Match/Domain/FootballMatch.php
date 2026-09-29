@@ -90,7 +90,7 @@ final class FootballMatch
         return count($this->summonedPlayers) >= 11;
     }
 
-    private function isPlayerAlreadySummoned(PlayerId $playerId): bool
+    public function isPlayerAlreadySummoned(PlayerId $playerId): bool
     {
         foreach ($this->summonedPlayers as $summoned) {
             if ($summoned->equals($playerId)) {
