@@ -1,0 +1,51 @@
+{# templates/match/create.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau match{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4" style="color: #1B2A4A;">Nouveau match</h1>
+
+    <form method="post" class="col-md-6">
+        <div class="mb-3">
+            <label for="homeTeamId" class="form-label">Notre équipe</label>
+            <select class="form-select" id="homeTeamId" name="homeTeamId" required>
+                <option value="" disabled selected>Choisir une équipe</option>
+                {% for team in teams %}
+                    <option value="{{ team.id.toString }}">{{ team.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="awayClubName" class="form-label">Adversaire</label>
+            <input type="text" class="form-control" id="awayClubName" name="awayClubName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="competitionName" class="form-label">Compétition</label>
+            <input type="text" class="form-control" id="competitionName" name="competitionName" required>
+        </div>
+
+        <div class="row">
+            <div class="col mb-3">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <div class="col mb-3">
+                <label for="time" class="form-label">Heure</label>
+                <input type="text" class="form-control" id="time" name="time" placeholder="15H00" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Créer</button>
+    </form>
+
+    {% if success %}
+        <div class="alert alert-success mt-3">Match créé avec l'id : {{ success }}</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+{% endblock %}

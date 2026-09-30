@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle équipe{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4" style="color: #1B2A4A;">Nouvelle équipe</h1>
+
+    <form method="post" class="col-md-6">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Catégorie</label>
+            <select class="form-select" id="category" name="category" required>
+                <option value="" disabled selected>Choisir une catégorie</option>
+                <option value="senior1">Seniors A</option>
+                <option value="senior2">Seniors B</option>
+                <option value="senior3">Seniors C</option>
+                <option value="u18">U18</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Créer</button>
+    </form>
+
+    {% if success %}
+        <div class="alert alert-success mt-3">Équipe créée avec l'id : {{ success }}</div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %}
+{% endblock %}

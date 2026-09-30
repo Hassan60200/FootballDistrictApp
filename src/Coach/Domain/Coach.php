@@ -14,13 +14,13 @@ final class Coach
     private readonly CoachId $id;
 
     #[ORM\Column(type: 'string')]
-    private readonly string $firstName;
+    private  string $firstName;
 
     #[ORM\Column(type: 'string')]
-    private readonly string $lastName;
+    private  string $lastName;
 
     #[ORM\Column(type: 'coach_email', unique: true)]
-    private readonly Email $email;
+    private  Email $email;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isActive;
@@ -60,4 +60,11 @@ final class Coach
     public function getLastName(): string { return $this->lastName; }
     public function getEmail(): Email { return $this->email; }
     public function isActive(): bool { return $this->isActive; }
+
+    public function rename(string $firstName, string $lastName, Email $email): void
+    {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+    }
 }

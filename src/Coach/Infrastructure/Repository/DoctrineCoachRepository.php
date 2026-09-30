@@ -17,7 +17,7 @@ final class DoctrineCoachRepository extends ServiceEntityRepository implements C
 
     public function findById(CoachId $id): ?Coach
     {
-        return $this->find($id->toString());
+        return $this->find($id);
     }
 
     public function save(Coach $coach): void
@@ -29,5 +29,11 @@ final class DoctrineCoachRepository extends ServiceEntityRepository implements C
     public function findAll(): array
     {
         return parent::findAll();
+    }
+
+    public function delete(Coach $coach): void
+    {
+        $this->getEntityManager()->remove($coach);
+        $this->getEntityManager()->flush();
     }
 }

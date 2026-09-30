@@ -17,7 +17,7 @@ final class DoctrinePlayerRepository extends ServiceEntityRepository implements 
 
     public function findById(PlayerId $id): ?Player
     {
-        return $this->find($id->toString());
+        return $this->find($id);
     }
 
     public function save(Player $player): void
@@ -29,5 +29,11 @@ final class DoctrinePlayerRepository extends ServiceEntityRepository implements 
     public function findAll(): array
     {
         return parent::findAll();
+    }
+
+    public function delete(Player $player): void
+    {
+        $this->getEntityManager()->remove($player);
+        $this->getEntityManager()->flush();
     }
 }

@@ -11,6 +11,7 @@ doctrine:
             coach_id: App\Coach\Infrastructure\Doctrine\CoachIdType
             player_email: App\Player\Infrastructure\Doctrine\EmailType
             coach_email: App\Coach\Infrastructure\Doctrine\EmailType
+            player_id_collection: App\Match\Infrastructure\Doctrine\PlayerIdCollectionType
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:

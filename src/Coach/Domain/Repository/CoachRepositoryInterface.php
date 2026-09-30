@@ -10,4 +10,6 @@ interface CoachRepositoryInterface
     public function findById(CoachId $id): ?Coach;
     public function save(Coach $coach): void;
     public function findAll(): array;
+    public function delete(Coach $coach): void;
+
 }

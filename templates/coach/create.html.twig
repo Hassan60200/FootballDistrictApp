@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau coach{% endblock %}
+
+{% block body %}
+<h1 class="mb-4" style="color: #1B2A4A;">Nouveau coach</h1>
+
+<form method="post" class="col-md-6">
+    <div class="mb-3">
+        <label for="firstName" class="form-label">Prénom</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="lastName" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+
+    <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Créer</button>
+</form>
+
+{% if success %}
+    <div class="alert alert-success mt-3">Coach créé avec l'id : {{ success }}</div>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+{% endif %}
+{% endblock %}

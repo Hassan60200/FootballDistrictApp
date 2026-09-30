@@ -14,16 +14,16 @@ final class Player
     private readonly PlayerId $id;
 
     #[ORM\Column(type: 'string')]
-    private readonly string $firstName;
+    private string $firstName;
 
     #[ORM\Column(type: 'string')]
-    private readonly string $lastName;
+    private string $lastName;
 
     #[ORM\Column(type: 'integer')]
-    private readonly int $age;
+    private int $age;
 
     #[ORM\Column(type: 'player_email', unique: true)]
-    private readonly Email $email;
+    private Email $email;
 
     #[ORM\Column(type: 'string', enumType: Position::class)]
     private Position $position;
@@ -33,13 +33,14 @@ final class Player
 
     private function __construct(
         PlayerId $id,
-        string $firstName,
-        string $lastName,
-        int $age,
-        Email $email,
+        string   $firstName,
+        string   $lastName,
+        int      $age,
+        Email    $email,
         Position $position,
-        bool $isActive,
-    ) {
+        bool     $isActive,
+    )
+    {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -50,12 +51,13 @@ final class Player
     }
 
     public static function register(
-        string $firstName,
-        string $lastName,
-        int $age,
-        Email $email,
+        string   $firstName,
+        string   $lastName,
+        int      $age,
+        Email    $email,
         Position $position,
-    ): self {
+    ): self
+    {
         return new self(PlayerId::generate(), $firstName, $lastName, $age, $email, $position, true);
     }
 
@@ -67,11 +69,47 @@ final class Player
         $this->isActive = false;
     }
 
-    public function getId(): PlayerId { return $this->id; }
-    public function getFirstName(): string { return $this->firstName; }
-    public function getLastName(): string { return $this->lastName; }
-    public function getAge(): int { return $this->age; }
-    public function getEmail(): Email { return $this->email; }
-    public function getPosition(): Position { return $this->position; }
-    public function isActive(): bool { return $this->isActive; }
+    public function getId(): PlayerId
+    {
+        return $this->id;
+    }
+
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    public function getEmail(): Email
+    {
+        return $this->email;
+    }
+
+    public function getPosition(): Position
+    {
+        return $this->position;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function update(string $firstName, string $lastName, int $age, Email $email, Position $position): void
+    {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->age = $age;
+        $this->email = $email;
+        $this->position = $position;
+    }
 }

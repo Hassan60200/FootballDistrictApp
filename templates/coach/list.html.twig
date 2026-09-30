@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coachs{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-0" style="color: #1B2A4A;">Coachs</h1>
+        <p class="text-muted mb-0">{{ coaches|length }} coach{{ coaches|length > 1 ? 's' : '' }}</p>
+    </div>
+    <a href="{{ path('coach_web_create') }}" class="btn" style="background-color: #1B2A4A; color: white;">
+        + Nouveau coach
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr style="background-color: #F4F6F8;">
+                    <th class="ps-4 py-3 text-uppercase small text-muted">Coach</th>
+                    <th class="py-3 text-uppercase small text-muted">Email</th>
+                    <th class="py-3 text-uppercase small text-muted">Statut</th>
+                    <th class="pe-4 py-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for coach in coaches %}
+                <tr>
+                    <td class="ps-4 py-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+                                 style="width: 40px; height: 40px; background-color: #1B2A4A; font-size: 0.9rem;">
+                                {{ coach.firstName|slice(0, 1)|upper }}{{ coach.lastName|slice(0, 1)|upper }}
+                            </div>
+                            <div class="fw-semibold">{{ coach.firstName }} {{ coach.lastName }}</div>
+                        </div>
+                    </td>
+                    <td class="py-3">{{ coach.email.toString }}</td>
+                    <td class="py-3">
+                        {% if coach.active %}
+                            <span class="badge rounded-pill" style="background-color: #2E8B57;">Actif</span>
+                        {% else %}
+                            <span class="badge rounded-pill bg-secondary">Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td class="pe-4 py-3 text-end">
+                        <a href="{{ path('coach_web_edit', {id: coach.id.toString}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
+                        <form method="post" action="{{ path('coach_web_delete', {id: coach.id.toString}) }}" class="d-inline" onsubmit="return confirm('Supprimer ce coach ?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center py-5 text-muted">
+                        Aucun coach pour le moment.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

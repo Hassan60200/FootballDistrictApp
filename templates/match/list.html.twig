@@ -1,0 +1,57 @@
+{# templates/match/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Matchs{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0" style="color: #1B2A4A;">Matchs</h1>
+            <p class="text-muted mb-0">{{ matches|length }} match{{ matches|length > 1 ? 's' : '' }}</p>
+        </div>
+        <a href="{{ path('match_web_create') }}" class="btn" style="background-color: #1B2A4A; color: white;">
+            + Nouveau match
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr style="background-color: #F4F6F8;">
+                    <th class="ps-4 py-3 text-uppercase small text-muted">Date</th>
+                    <th class="py-3 text-uppercase small text-muted">Match</th>
+                    <th class="py-3 text-uppercase small text-muted">Compétition</th>
+                    <th class="py-3 text-uppercase small text-muted">Convoqués</th>
+                    <th class="pe-4 py-3"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for match in matches %}
+                    <tr>
+                        <td class="ps-4 py-3">{{ match.scheduledAt.toDateTimeImmutable|date('d/m/Y H:i') }}</td>
+                        <td class="py-3 fw-semibold">{{ match.homeClub.name }} vs {{ match.awayClub.name }}</td>
+                        <td class="py-3">{{ match.competitionName }}</td>
+                        <td class="py-3">
+                        <span class="badge rounded-pill" style="background-color: #8A99A8; color: white;">
+                            {{ match.summonedPlayers|length }} / 14
+                        </span>
+                        </td>
+                        <td class="pe-4 py-3 text-end">
+                            <a href="{{ path('match_web_summon', {id: match.id.toString}) }}" class="btn btn-sm" style="background-color: #1B2A4A; color: white;">
+                                Convoquer
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            Aucun match pour le moment.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
