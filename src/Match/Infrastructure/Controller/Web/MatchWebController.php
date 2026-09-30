@@ -93,27 +93,52 @@ final class MatchWebController extends AbstractController
         $error = null;
 
         if ($request->isMethod('POST')) {
-            try {
-                $handler->handle(new SummonPlayerCommand(
-                    matchId: MatchId::fromString($id),
-                    playerId: PlayerId::fromString($request->request->get('playerId')),
-                ));
-                $success = true;
-                $match = $matches->findById(MatchId::fromString($id));
-            } catch (\DomainException $e) {
-                $error = $e->getMessage();
+            $playerIds = $request->request->all('playerIds');
+            $summonedCount = 0;
+
+            foreach ($playerIds as $playerId) {
+                try {
+                    $handler->handle(new SummonPlayerCommand(
+                        matchId: MatchId::fromString($id),
+                        playerId: PlayerId::fromString($playerId),
+                    ));
+                    $summonedCount++;
+                } catch (\DomainException $e) {
+                    $error = $e->getMessage();
+                    break;
+                }
             }
+
+            if ($summonedCount > 0) {
+                $success = sprintf('%d joueur%s convoqué%s.', $summonedCount, $summonedCount > 1 ? 's' : '', $summonedCount > 1 ? 's' : '');
+            }
+
+            $match = $matches->findById(MatchId::fromString($id));
         }
 
-        $summonedPlayers = array_map(
+        $summonedPlayerIds = $match->getSummonedPlayers();
+
+        $summonedPlayers = array_filter(array_map(
             static fn ($playerId) => $players->findById($playerId),
-            $match->getSummonedPlayers(),
+            $summonedPlayerIds,
+        ));
+
+        $availablePlayers = array_filter(
+            $players->findAll(),
+            static function ($player) use ($summonedPlayerIds) {
+                foreach ($summonedPlayerIds as $summonedId) {
+                    if ($summonedId->equals($player->getId())) {
+                        return false;
+                    }
+                }
+                return true;
+            }
         );
 
         return $this->render('match/summon.html.twig', [
             'match' => $match,
-            'allPlayers' => $players->findAll(),
-            'summonedPlayers' => array_filter($summonedPlayers),
+            'availablePlayers' => $availablePlayers,
+            'summonedPlayers' => $summonedPlayers,
             'success' => $success,
             'error' => $error,
         ]);

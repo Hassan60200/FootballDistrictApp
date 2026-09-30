@@ -34,6 +34,7 @@ final class FootballMatch
     private readonly ClubInfo $awayClub;
 
     /** @var PlayerId[] */
+    #[ORM\Column(type: 'player_id_collection')]
     private array $summonedPlayers = [];
 
     private function __construct(

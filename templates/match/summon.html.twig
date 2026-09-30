@@ -8,34 +8,58 @@
     <p class="text-muted mb-4">{{ match.scheduledAt.toDateTimeImmutable|date('d/m/Y à H:i') }} — {{ match.competitionName }}</p>
 
     <div class="row">
-        <div class="col-md-5">
-            <form method="post" class="card border-0 shadow-sm p-3">
-                <label for="playerId" class="form-label">Convoquer un joueur</label>
-                <select class="form-select mb-3" id="playerId" name="playerId" required>
-                    <option value="" disabled selected>Choisir un joueur</option>
-                    {% for player in allPlayers %}
-                        <option value="{{ player.id.toString }}">{{ player.firstName }} {{ player.lastName }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Convoquer</button>
-            </form>
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Joueurs disponibles</h5>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleAll(true)">Tout sélectionner</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="toggleAll(false)">Tout désélectionner</button>
+                        </div>
+                    </div>
 
-            {% if success %}
-                <div class="alert alert-success mt-3">Joueur convoqué avec succès.</div>
-            {% endif %}
+                    <form method="post">
+                        <div class="list-group mb-3" style="max-height: 400px; overflow-y: auto;">
+                            {% for player in availablePlayers %}
+                                <label class="list-group-item d-flex align-items-center gap-2">
+                                    <input class="form-check-input player-checkbox" type="checkbox" name="playerIds[]" value="{{ player.id.toString }}">
+                                    <span>
+                                    {{ player.firstName }} {{ player.lastName }}
+                                    <span class="badge rounded-pill ms-1" style="background-color: #8A99A8;">{{ player.position.value|capitalize }}</span>
+                                </span>
+                                </label>
+                            {% else %}
+                                <div class="list-group-item text-muted">Tous les joueurs sont déjà convoqués.</div>
+                            {% endfor %}
+                        </div>
 
-            {% if error %}
-                <div class="alert alert-danger mt-3">{{ error }}</div>
-            {% endif %}
+                        <button type="submit" class="btn w-100" style="background-color: #1B2A4A; color: white;">
+                            Convoquer la sélection
+                        </button>
+                    </form>
+
+                    {% if success %}
+                        <div class="alert alert-success mt-3">{{ success }}</div>
+                    {% endif %}
+
+                    {% if error %}
+                        <div class="alert alert-danger mt-3">{{ error }}</div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-7">
+        <div class="col-md-6">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <h5 class="mb-3">Joueurs convoqués ({{ summonedPlayers|length }} / 14)</h5>
                     <ul class="list-group list-group-flush">
                         {% for player in summonedPlayers %}
-                            <li class="list-group-item">{{ player.firstName }} {{ player.lastName }}</li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                {{ player.firstName }} {{ player.lastName }}
+                                <span class="badge rounded-pill" style="background-color: #2E8B57;">Convoqué</span>
+                            </li>
                         {% else %}
                             <li class="list-group-item text-muted">Aucun joueur convoqué pour l'instant.</li>
                         {% endfor %}
@@ -44,4 +68,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleAll(checked) {
+            document.querySelectorAll('.player-checkbox').forEach(cb => cb.checked = checked);
+        }
+    </script>
 {% endblock %}
