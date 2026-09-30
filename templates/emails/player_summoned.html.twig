@@ -1,0 +1,29 @@
+{# templates/emails/player_summoned.html.twig #}
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; color: #23272f;">
+<div style="max-width: 500px; margin: 0 auto; padding: 20px;">
+    <h1 style="color: #1B2A4A; font-size: 20px;">Vous êtes convoqué !</h1>
+
+    <p>Bonjour {{ player.firstName }},</p>
+
+    <p>Vous avez été convoqué pour le match suivant :</p>
+
+    <div style="background-color: #F4F6F8; border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <p style="margin: 0; font-weight: bold; font-size: 16px;">
+            {{ match.homeClub.name }} vs {{ match.awayClub.name }}
+        </p>
+        <p style="margin: 4px 0 0 0; color: #565c69;">
+            {{ match.scheduledAt.toDateTimeImmutable|date('d/m/Y à H:i') }}
+        </p>
+        <p style="margin: 4px 0 0 0; color: #565c69;">
+            {{ match.competitionName }}
+        </p>
+    </div>
+
+    <p>En cas d'empêchement, merci de contacter directement votre coach par téléphone.</p>
+
+    <p style="margin-top: 24px; color: #8A99A8; font-size: 12px;">CA Venette — Message automatique</p>
+</div>
+</body>
+</html>
