@@ -7,6 +7,7 @@ services:
         environment:
             - APP_ENV=dev
             - DATABASE_URL=mysql://app:app@db:3306/ddd?serverVersion=8.0
+            - MAILER_DSN=smtp://mailpit:1025
 
     nginx:
         image: nginx:alpine
@@ -35,5 +36,10 @@ services:
             timeout: 3s
             retries: 10
 
+    mailpit:
+        image: axllent/mailpit:latest
+        ports:
+            - "8025:8025"   # interface web
+            - "1025:1025"   # serveur SMTP
 volumes:
     db_data:
