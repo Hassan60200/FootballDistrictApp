@@ -16,7 +16,7 @@ final class PlayerWeeklyAvailabilityChecker
         $matchesThisWeek = $this->matches->findByWeek($weekOf);
 
         foreach ($matchesThisWeek as $match) {
-            if ($match->isPlayerSummoned($playerId)) {
+            if ($match->isPlayerAlreadySummoned($playerId)) {
                 return false;
             }
         }

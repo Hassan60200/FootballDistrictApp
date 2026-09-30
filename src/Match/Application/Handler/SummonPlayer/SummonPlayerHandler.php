@@ -21,7 +21,7 @@ final class SummonPlayerHandler
             throw MatchNotFoundException::withId($command->matchId);
         }
 
-        if (!$this->availabilityChecker->isAvailableForWeek($command->playerId, $match->getScheduledAt())) {
+        if (!$this->availabilityChecker->isAvailableForWeek($command->playerId, $match->getScheduledAt()->toDateTimeImmutable())) {
             throw PlayerAlreadySummonedThisWeekException::forPlayer($command->playerId);
         }
 

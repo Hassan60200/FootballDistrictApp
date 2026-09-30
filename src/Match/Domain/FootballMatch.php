@@ -34,6 +34,7 @@ final class FootballMatch
     private readonly ClubInfo $awayClub;
 
     /** @var PlayerId[] */
+    #[ORM\Column(type: 'player_id_collection')]
     private array $summonedPlayers = [];
 
     private function __construct(
@@ -90,7 +91,7 @@ final class FootballMatch
         return count($this->summonedPlayers) >= 11;
     }
 
-    private function isPlayerAlreadySummoned(PlayerId $playerId): bool
+    public function isPlayerAlreadySummoned(PlayerId $playerId): bool
     {
         foreach ($this->summonedPlayers as $summoned) {
             if ($summoned->equals($playerId)) {
