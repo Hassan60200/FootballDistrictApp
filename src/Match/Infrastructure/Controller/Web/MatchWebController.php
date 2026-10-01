@@ -2,6 +2,8 @@
 
 namespace App\Match\Infrastructure\Controller\Web;
 
+use App\Match\Application\Handler\CancelMatch\CancelMatchCommand;
+use App\Match\Application\Handler\CancelMatch\CancelMatchHandler;
 use App\Match\Application\Handler\ScheduleMatch\ScheduleMatchCommand;
 use App\Match\Application\Handler\ScheduleMatch\ScheduleMatchHandler;
 use App\Match\Application\Handler\SummonPlayer\SummonPlayerCommand;
@@ -142,5 +144,17 @@ final class MatchWebController extends AbstractController
             'success' => $success,
             'error' => $error,
         ]);
+    }
+
+    #[Route('/{id}/cancel', name: 'match_web_cancel', methods: ['POST'])]
+    public function cancelMatch(string $id, CancelMatchHandler $handler): Response
+    {
+        try {
+            $handler->handle(new CancelMatchCommand(matchId: MatchId::fromString($id)));
+        } catch (\DomainException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('match_web_list');
     }
 }

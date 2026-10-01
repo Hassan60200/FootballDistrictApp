@@ -38,6 +38,9 @@ final class FootballMatch
     #[ORM\Column(type: 'player_id_collection')]
     private array $summonedPlayers = [];
 
+    #[ORM\Column(type: 'string', enumType: MatchStatus::class)]
+    private MatchStatus $status;
+
     private function __construct(
         MatchId $id,
         string $externalId,
@@ -52,6 +55,7 @@ final class FootballMatch
         $this->competitionName = $competitionName;
         $this->homeClub = $homeClub;
         $this->awayClub = $awayClub;
+        $this->status = MatchStatus::SCHEDULED;
     }
 
     public static function schedule(
@@ -69,6 +73,7 @@ final class FootballMatch
     public function getCompetitionName(): string { return $this->competitionName; }
     public function getHomeClub(): ClubInfo { return $this->homeClub; }
     public function getAwayClub(): ClubInfo { return $this->awayClub; }
+    public function getStatus(): MatchStatus { return $this->status; }
 
     public function summonPlayer(PlayerId $playerId): void
     {

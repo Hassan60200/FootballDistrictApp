@@ -31,6 +31,15 @@
                     <tr>
                         <td class="ps-4 py-3">{{ match.scheduledAt.toDateTimeImmutable|date('d/m/Y H:i') }}</td>
                         <td class="py-3 fw-semibold">{{ match.homeClub.name }} vs {{ match.awayClub.name }}</td>
+                        <td class="py-3">
+                            {% if match.status.value == 'cancelled' %}
+                                <span class="badge rounded-pill bg-danger">Annulé</span>
+                            {% elseif match.status.value == 'played' %}
+                                <span class="badge rounded-pill bg-secondary">Joué</span>
+                            {% else %}
+                                <span class="badge rounded-pill" style="background-color: #2E8B57;">Programmé</span>
+                            {% endif %}
+                        </td>
                         <td class="py-3">{{ match.competitionName }}</td>
                         <td class="py-3">
                         <span class="badge rounded-pill" style="background-color: #8A99A8; color: white;">
@@ -38,10 +47,17 @@
                         </span>
                         </td>
                         <td class="pe-4 py-3 text-end">
-                            <a href="{{ path('match_web_summon', {id: match.id.toString}) }}" class="btn btn-sm" style="background-color: #1B2A4A; color: white;">
-                                Convoquer
+                            <button class="btn btn-sm btn-outline-secondary" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <a href="{{ path('match_web_summon', {id: match.id.toString}) }}" class="btn btn-sm" style="background-color: #1B2A4A; color: white;" title="Convoquer">
+                                <i class="bi bi-people"></i>
                             </a>
-                            <button class="btn btn-danger">Annuler</button>
+                            <form method="post" action="{{ path('match_web_cancel', {id: match.id.toString}) }}" class="d-inline" onsubmit="return confirm('Annuler ce match ? Tous les joueurs convoqués seront notifiés par email.');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Annuler">
+                                    <i class="bi bi-x-circle"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 {% else %}
