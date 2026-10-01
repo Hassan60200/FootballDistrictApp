@@ -3,6 +3,7 @@
 namespace App\Match\Domain;
 
 use App\Match\Domain\Exception\CannotSummonForPastMatchException;
+use App\Match\Domain\Exception\MatchAlreadyCancelledException;
 use App\Match\Domain\Exception\MaxSummonedPlayersReachedException;
 use App\Match\Domain\Exception\PlayerAlreadySummonedException;
 use App\Player\Domain\PlayerId;
@@ -109,5 +110,14 @@ final class FootballMatch
     public function getSummonedPlayers(): array
     {
         return $this->summonedPlayers;
+    }
+
+    public function cancel(): void
+    {
+        if ($this->status === MatchStatus::CANCELLED) {
+            throw MatchAlreadyCancelledException::forMatch($this->id);
+        }
+
+        $this->status = MatchStatus::CANCELLED;
     }
 }
