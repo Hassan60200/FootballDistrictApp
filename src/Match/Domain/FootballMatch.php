@@ -3,6 +3,7 @@
 namespace App\Match\Domain;
 
 use App\Match\Domain\Exception\CannotSummonForPastMatchException;
+use App\Match\Domain\Exception\MatchAlreadyCancelledException;
 use App\Match\Domain\Exception\MaxSummonedPlayersReachedException;
 use App\Match\Domain\Exception\PlayerAlreadySummonedException;
 use App\Player\Domain\PlayerId;
@@ -22,28 +23,31 @@ final class FootballMatch
     private readonly string $externalId;
 
     #[ORM\Embedded(class: MatchDateTime::class)]
-    private readonly MatchDateTime $scheduledAt;
+    private MatchDateTime $scheduledAt;
 
     #[ORM\Column(type: 'string')]
-    private readonly string $competitionName;
+    private string $competitionName;
 
     #[ORM\Embedded(class: ClubInfo::class, columnPrefix: 'home_')]
     private readonly ClubInfo $homeClub;
 
     #[ORM\Embedded(class: ClubInfo::class, columnPrefix: 'away_')]
-    private readonly ClubInfo $awayClub;
+    private ClubInfo $awayClub;
 
     /** @var PlayerId[] */
     #[ORM\Column(type: 'player_id_collection')]
     private array $summonedPlayers = [];
 
+    #[ORM\Column(type: 'string', enumType: MatchStatus::class)]
+    private MatchStatus $status;
+
     private function __construct(
-        MatchId $id,
-        string $externalId,
+        MatchId       $id,
+        string        $externalId,
         MatchDateTime $scheduledAt,
-        string $competitionName,
-        ClubInfo $homeClub,
-        ClubInfo $awayClub,
+        string        $competitionName,
+        ClubInfo      $homeClub,
+        ClubInfo      $awayClub,
     ) {
         $this->id = $id;
         $this->externalId = $externalId;
@@ -51,23 +55,52 @@ final class FootballMatch
         $this->competitionName = $competitionName;
         $this->homeClub = $homeClub;
         $this->awayClub = $awayClub;
+        $this->status = MatchStatus::SCHEDULED;
     }
 
-    public static function schedule(
-        string $externalId,
+    public function reschedule(
         MatchDateTime $scheduledAt,
-        string $competitionName,
-        ClubInfo $homeClub,
-        ClubInfo $awayClub,
-    ): self {
-        return new self(MatchId::generate(), $externalId, $scheduledAt, $competitionName, $homeClub, $awayClub);
+        string        $competitionName,
+        string        $awayClubName,
+): void {
+        if ($this->status === MatchStatus::CANCELLED) {
+            throw MatchAlreadyCancelledException::forMatch($this->id);
+        }
+
+        $this->scheduledAt = $scheduledAt;
+        $this->competitionName = $competitionName;
+        $this->awayClub = new ClubInfo($awayClubName, $this->awayClub->getLogoUrl());
     }
 
-    public function getId(): MatchId { return $this->id; }
-    public function getScheduledAt(): MatchDateTime { return $this->scheduledAt; }
-    public function getCompetitionName(): string { return $this->competitionName; }
-    public function getHomeClub(): ClubInfo { return $this->homeClub; }
-    public function getAwayClub(): ClubInfo { return $this->awayClub; }
+    public function getId(): MatchId
+    {
+        return $this->id;
+    }
+
+    public function getScheduledAt(): MatchDateTime
+    {
+        return $this->scheduledAt;
+    }
+
+    public function getCompetitionName(): string
+    {
+        return $this->competitionName;
+    }
+
+    public function getHomeClub(): ClubInfo
+    {
+        return $this->homeClub;
+    }
+
+    public function getAwayClub(): ClubInfo
+    {
+        return $this->awayClub;
+    }
+
+    public function getStatus(): MatchStatus
+    {
+        return $this->status;
+    }
 
     public function summonPlayer(PlayerId $playerId): void
     {
@@ -109,5 +142,19 @@ final class FootballMatch
     public function getSummonedPlayers(): array
     {
         return $this->summonedPlayers;
+    }
+
+    public function cancel(): void
+    {
+        if ($this->status === MatchStatus::CANCELLED) {
+            throw MatchAlreadyCancelledException::forMatch($this->id);
+        }
+
+        $this->status = MatchStatus::CANCELLED;
+    }
+
+    public function changeStatus(MatchStatus $status): void
+    {
+        $this->status = $status;
     }
 }

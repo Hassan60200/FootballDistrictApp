@@ -2,13 +2,20 @@
 
 namespace App\Match\Infrastructure\Controller\Web;
 
+use App\Match\Application\Handler\CancelMatch\CancelMatchCommand;
+use App\Match\Application\Handler\CancelMatch\CancelMatchHandler;
+use App\Match\Application\Handler\ChangeMatchStatus\ChangeMatchStatusCommand;
+use App\Match\Application\Handler\ChangeMatchStatus\ChangeMatchStatusHandler;
 use App\Match\Application\Handler\ScheduleMatch\ScheduleMatchCommand;
 use App\Match\Application\Handler\ScheduleMatch\ScheduleMatchHandler;
 use App\Match\Application\Handler\SummonPlayer\SummonPlayerCommand;
 use App\Match\Application\Handler\SummonPlayer\SummonPlayerHandler;
+use App\Match\Application\Handler\UpdateMatch\UpdateMatchCommand;
+use App\Match\Application\Handler\UpdateMatch\UpdateMatchHandler;
 use App\Match\Application\Query\ListMatches\ListMatchesHandler;
 use App\Match\Application\Query\ListMatches\ListMatchesQuery;
 use App\Match\Domain\MatchId;
+use App\Match\Domain\MatchStatus;
 use App\Match\Domain\Repository\MatchRepositoryInterface;
 use App\Player\Domain\PlayerId;
 use App\Player\Domain\Repository\PlayerRepositoryInterface;
@@ -142,5 +149,50 @@ final class MatchWebController extends AbstractController
             'success' => $success,
             'error' => $error,
         ]);
+    }
+
+    #[Route('/{id}/cancel', name: 'match_web_cancel', methods: ['POST'])]
+    public function cancelMatch(string $id, CancelMatchHandler $handler): Response
+    {
+        try {
+            $handler->handle(new CancelMatchCommand(matchId: MatchId::fromString($id)));
+        } catch (\DomainException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('match_web_list');
+    }
+
+    #[Route('/{id}/edit', name: 'match_web_edit', methods: ['POST'])]
+    public function editMatch(string $id, Request $request, UpdateMatchHandler $handler): Response
+    {
+        try {
+            $handler->handle(new UpdateMatchCommand(
+                matchId: MatchId::fromString($id),
+                date: new \DateTimeImmutable($request->request->get('date')),
+                time: $request->request->get('time'),
+                competitionName: $request->request->get('competitionName'),
+                awayClubName: $request->request->get('awayClubName'),
+            ));
+        } catch (\DomainException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('match_web_list');
+    }
+
+    #[Route('/{id}/status', name: 'match_web_change_status', methods: ['POST'])]
+    public function changeStatus(string $id, Request $request, ChangeMatchStatusHandler $handler): Response
+    {
+        try {
+            $handler->handle(new ChangeMatchStatusCommand(
+                matchId: MatchId::fromString($id),
+                status: MatchStatus::from($request->request->get('status')),
+            ));
+        } catch (\DomainException $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
+
+        return $this->redirectToRoute('match_web_list');
     }
 }

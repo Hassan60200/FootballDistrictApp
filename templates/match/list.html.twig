@@ -22,6 +22,7 @@
                     <th class="ps-4 py-3 text-uppercase small text-muted">Date</th>
                     <th class="py-3 text-uppercase small text-muted">Match</th>
                     <th class="py-3 text-uppercase small text-muted">Compétition</th>
+                    <th class="py-3 text-uppercase small text-muted">Statut</th>
                     <th class="py-3 text-uppercase small text-muted">Convoqués</th>
                     <th class="pe-4 py-3"></th>
                 </tr>
@@ -32,20 +33,100 @@
                         <td class="ps-4 py-3">{{ match.scheduledAt.toDateTimeImmutable|date('d/m/Y H:i') }}</td>
                         <td class="py-3 fw-semibold">{{ match.homeClub.name }} vs {{ match.awayClub.name }}</td>
                         <td class="py-3">{{ match.competitionName }}</td>
+
                         <td class="py-3">
-                        <span class="badge rounded-pill" style="background-color: #8A99A8; color: white;">
-                            {{ match.summonedPlayers|length }} / 14
-                        </span>
-                        </td>
-                        <td class="pe-4 py-3 text-end">
-                            <a href="{{ path('match_web_summon', {id: match.id.toString}) }}" class="btn btn-sm" style="background-color: #1B2A4A; color: white;">
-                                Convoquer
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#statusModal{{ loop.index }}" class="text-decoration-none">
+                                {% if match.status.value == 'cancelled' %}
+                                    <span class="badge rounded-pill bg-danger">Annulé <i class="bi bi-pencil-fill" style="font-size: 0.6rem;"></i></span>
+                                {% elseif match.status.value == 'played' %}
+                                    <span class="badge rounded-pill bg-secondary">Joué <i class="bi bi-pencil-fill" style="font-size: 0.6rem;"></i></span>
+                                {% else %}
+                                    <span class="badge rounded-pill" style="background-color: #2E8B57;">Programmé <i class="bi bi-pencil-fill" style="font-size: 0.6rem;"></i></span>
+                                {% endif %}
                             </a>
+
+                            {# Modal changement de statut #}
+                            <div class="modal fade" id="statusModal{{ loop.index }}" tabindex="-1">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">
+                                        <form method="post" action="{{ path('match_web_change_status', {id: match.id.toString}) }}">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Changer le statut</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <select class="form-select" name="status">
+                                                    <option value="scheduled" {{ match.status.value == 'scheduled' ? 'selected' }}>Programmé</option>
+                                                    <option value="played" {{ match.status.value == 'played' ? 'selected' }}>Joué</option>
+                                                    <option value="cancelled" {{ match.status.value == 'cancelled' ? 'selected' }}>Annulé</option>
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
+                                                <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Valider</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="py-3">
+                            <span class="badge rounded-pill" style="background-color: #8A99A8; color: white;">
+                                {{ match.summonedPlayers|length }} / 14
+                            </span>
+                        </td>
+
+                        <td class="pe-4 py-3 text-end">
+                            <button class="btn btn-sm btn-outline-secondary" title="Modifier" data-bs-toggle="modal" data-bs-target="#editModal{{ loop.index }}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <a href="{{ path('match_web_summon', {id: match.id.toString}) }}" class="btn btn-sm" style="background-color: #1B2A4A; color: white;" title="Convoquer">
+                                <i class="bi bi-people"></i>
+                            </a>
+
+                            {# Modal d'édition complète #}
+                            <div class="modal fade" id="editModal{{ loop.index }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="post" action="{{ path('match_web_edit', {id: match.id.toString}) }}">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Modifier le match</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Adversaire</label>
+                                                    <input type="text" class="form-control" name="awayClubName" value="{{ match.awayClub.name }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Compétition</label>
+                                                    <input type="text" class="form-control" name="competitionName" value="{{ match.competitionName }}" required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label class="form-label">Date</label>
+                                                        <input type="date" class="form-control" name="date" value="{{ match.scheduledAt.toDateTimeImmutable|date('Y-m-d') }}" required>
+                                                    </div>
+                                                    <div class="col mb-3">
+                                                        <label class="form-label">Heure</label>
+                                                        <input type="text" class="form-control" name="time" value="{{ match.scheduledAt.toDateTimeImmutable|date('H\\Hi') }}" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                <button type="submit" class="btn" style="background-color: #1B2A4A; color: white;">Enregistrer</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">
+                        <td colspan="6" class="text-center py-5 text-muted">
                             Aucun match pour le moment.
                         </td>
                     </tr>
