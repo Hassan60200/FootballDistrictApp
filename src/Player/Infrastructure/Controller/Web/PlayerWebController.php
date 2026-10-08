@@ -10,6 +10,7 @@ use App\Player\Application\Handler\RegisterPlayer\RegisterPlayerCommand;
 use App\Player\Application\Handler\RegisterPlayer\RegisterPlayerHandler;
 use App\Player\Application\Handler\UpdatePlayer\UpdatePlayerCommand;
 use App\Player\Application\Handler\UpdatePlayer\UpdatePlayerHandler;
+use App\Player\Domain\PhoneNumber;
 use App\Player\Domain\PlayerId;
 use App\Player\Domain\Position;
 use App\Player\Domain\Repository\PlayerRepositoryInterface;
@@ -37,7 +38,8 @@ class PlayerWebController extends AbstractController
                     age: (int) $request->request->get('age'),
                     email: $request->request->get('email'),
                     position: Position::from($request->request->get('position')),
-                ));
+                    phoneNumber: PhoneNumber::fromString($request->request->get('phoneNumber')
+                )));
                 $success = $playerId->toString();
                 return $this->redirectToRoute('player_web_list');
             } catch (\DomainException $e) {

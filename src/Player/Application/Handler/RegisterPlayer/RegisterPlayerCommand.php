@@ -2,6 +2,7 @@
 
 namespace App\Player\Application\Handler\RegisterPlayer;
 
+use App\Player\Domain\PhoneNumber;
 use App\Player\Domain\Position;
 
 final class RegisterPlayerCommand
@@ -12,5 +13,6 @@ final class RegisterPlayerCommand
         public readonly int $age,
         public readonly string $email,
         public readonly Position $position,
+        public readonly PhoneNumber $phoneNumber,
     ) {}
 }

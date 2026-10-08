@@ -23,6 +23,7 @@ final class PlayerFixtures extends Fixture
                 age: random_int(18, 35),
                 email: Email::fromString(strtolower(self::FIRST_NAMES[$i]) . '.' . strtolower(self::LAST_NAMES[$i]) . '@cav.fr'),
                 position: self::POSITIONS[$i % 4],
+                phoneNumber: \App\Player\Domain\PhoneNumber::fromString('06 ' . random_int(10, 99) . ' ' . random_int(10, 99) . ' ' . random_int(10, 99) . ' ' . random_int(10, 99))
             );
 
             $manager->persist($player);

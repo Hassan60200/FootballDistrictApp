@@ -10,6 +10,7 @@ doctrine:
             match_id: App\Match\Infrastructure\Doctrine\MatchIdType
             coach_id: App\Coach\Infrastructure\Doctrine\CoachIdType
             player_email: App\Player\Infrastructure\Doctrine\EmailType
+            player_phone_number: App\Player\Infrastructure\Doctrine\PhoneNumberType
             coach_email: App\Coach\Infrastructure\Doctrine\EmailType
             player_id_collection: App\Match\Infrastructure\Doctrine\PlayerIdCollectionType
 

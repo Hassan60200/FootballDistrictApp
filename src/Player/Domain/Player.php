@@ -31,6 +31,9 @@ final class Player
     #[ORM\Column(type: 'boolean')]
     private bool $isActive;
 
+    #[ORM\Column(type: 'player_phone_number')]
+    private PhoneNumber $phoneNumber;
+
     private function __construct(
         PlayerId $id,
         string   $firstName,
@@ -38,6 +41,7 @@ final class Player
         int      $age,
         Email    $email,
         Position $position,
+        PhoneNumber $phoneNumber,
         bool     $isActive,
     )
     {
@@ -47,6 +51,7 @@ final class Player
         $this->age = $age;
         $this->email = $email;
         $this->position = $position;
+        $this->phoneNumber = $phoneNumber;
         $this->isActive = $isActive;
     }
 
@@ -56,9 +61,10 @@ final class Player
         int      $age,
         Email    $email,
         Position $position,
+        PhoneNumber $phoneNumber,
     ): self
     {
-        return new self(PlayerId::generate(), $firstName, $lastName, $age, $email, $position, true);
+        return new self(PlayerId::generate(), $firstName, $lastName, $age, $email, $position, $phoneNumber,true);
     }
 
     public function deactivate(): void
@@ -104,12 +110,16 @@ final class Player
         return $this->isActive;
     }
 
-    public function update(string $firstName, string $lastName, int $age, Email $email, Position $position): void
+    public function update(string $firstName, string $lastName, int $age, Email $email, Position $position,        PhoneNumber $phoneNumber,
+    ): void
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->age = $age;
         $this->email = $email;
         $this->position = $position;
+        $this->phoneNumber = $phoneNumber;
     }
+
+    public function getPhoneNumber(): PhoneNumber { return $this->phoneNumber; }
 }
