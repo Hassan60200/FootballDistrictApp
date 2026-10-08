@@ -32,16 +32,23 @@
                     <tr>
                         <td class="ps-4 py-3">
                             <div class="d-flex align-items-center gap-3">
-                                <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
-                                     style="width: 40px; height: 40px; background-color: #1B2A4A; font-size: 0.9rem;">
+                                <div
+                                    class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
+                                    style="width: 40px; height: 40px; background-color: #1B2A4A; font-size: 0.9rem;">
                                     {{ player.firstName|slice(0, 1)|upper }}{{ player.lastName|slice(0, 1)|upper }}
                                 </div>
-                                <div class="fw-semibold">{{ player.firstName }} {{ player.lastName }}</div>
+                                <div class="fw-semibold">
+                                    <a href="{{ path('player_web_show', {id: player.id.toString}) }}"
+                                       class="text-underline text-decoration-none text-dark">
+                                        {{ player.firstName }} {{ player.lastName }}
+                                    </a>
+                                </div>
                             </div>
                         </td>
                         <td class="py-3">{{ player.age }} ans</td>
                         <td class="py-3">
-                        <span class="badge rounded-pill" style="background-color: #8A99A8; color: white; font-weight: 500;">
+                        <span class="badge rounded-pill"
+                              style="background-color: #8A99A8; color: white; font-weight: 500;">
                             {{ player.position.value|capitalize }}
                         </span>
                         </td>
@@ -54,8 +61,14 @@
                             {% endif %}
                         </td>
                         <td class="pe-4 py-3 text-end">
-                            <a href="{{ path('player_web_edit', {id: player.id.toString}) }}" class="btn btn-sm btn-outline-secondary">Modifier</a>
-                            <form method="post" action="{{ path('player_web_delete', {id: player.id.toString}) }}" class="d-inline" onsubmit="return confirm('Supprimer ce joueur ?');">
+                            <a href="{{ path('player_web_show', {id: player.id.toString}) }}"
+                               class="btn btn-sm btn-outline-secondary" title="Voir">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ path('player_web_edit', {id: player.id.toString}) }}"
+                               class="btn btn-sm btn-outline-secondary">Modifier</a>
+                            <form method="post" action="{{ path('player_web_delete', {id: player.id.toString}) }}"
+                                  class="d-inline" onsubmit="return confirm('Supprimer ce joueur ?');">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
                             </form>
                         </td>

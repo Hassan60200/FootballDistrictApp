@@ -58,6 +58,16 @@ final class FootballMatch
         $this->status = MatchStatus::SCHEDULED;
     }
 
+    public static function schedule(
+        string $externalId,
+        MatchDateTime $scheduledAt,
+        string $competitionName,
+        ClubInfo $homeClub,
+        ClubInfo $awayClub,
+    ): self {
+        return new self(MatchId::generate(), $externalId, $scheduledAt, $competitionName, $homeClub, $awayClub);
+    }
+
     public function reschedule(
         MatchDateTime $scheduledAt,
         string        $competitionName,

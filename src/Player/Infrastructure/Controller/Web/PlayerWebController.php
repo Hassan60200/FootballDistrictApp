@@ -14,8 +14,8 @@ use App\Player\Domain\PhoneNumber;
 use App\Player\Domain\PlayerId;
 use App\Player\Domain\Position;
 use App\Player\Domain\Repository\PlayerRepositoryInterface;
-use App\Team\Application\Handler\CreateTeam\CreateTeamCommand;
-use DomainException;
+use App\Match\Application\Query\ListPlayerMatches\ListPlayerMatchesHandler;
+use App\Match\Application\Query\ListPlayerMatches\ListPlayerMatchesQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -108,5 +108,24 @@ class PlayerWebController extends AbstractController
         $handler->handle(new DeletePlayerCommand(playerId: PlayerId::fromString($id)));
 
         return $this->redirectToRoute('player_web_list');
+    }
+
+    #[Route('/{id}', name: 'player_web_show', requirements: ['id' => '[0-9a-fA-F-]{36}'], methods: ['GET'])]
+    public function showPlayer(
+        string $id,
+        PlayerRepositoryInterface $players,
+        ListPlayerMatchesHandler $matchesHandler,
+    ): Response {
+        $playerId = PlayerId::fromString($id);
+
+        $player = $players->findById($playerId);
+        if ($player === null) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('player/show.html.twig', [
+            'player' => $player,
+            'matches' => $matchesHandler->handle(new ListPlayerMatchesQuery($playerId)),
+        ]);
     }
 }

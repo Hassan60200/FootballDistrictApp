@@ -1,0 +1,99 @@
+{# templates/player/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ player.firstName }} {{ player.lastName }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('player_web_list') }}" class="text-decoration-none text-muted small">
+        <i class="bi bi-arrow-left"></i> Retour aux joueurs
+    </a>
+
+    <div class="card border-0 shadow-sm mt-2 mb-4">
+        <div class="card-body d-flex align-items-center gap-4 p-4">
+            <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold flex-shrink-0"
+                 style="width: 72px; height: 72px; background-color: #1B2A4A; font-size: 1.5rem;">
+                {{ player.firstName|slice(0, 1)|upper }}{{ player.lastName|slice(0, 1)|upper }}
+            </div>
+
+            <div class="flex-grow-1">
+                <h1 class="h3 mb-1" style="color: #1B2A4A;">{{ player.firstName }} {{ player.lastName }}</h1>
+                <div class="mb-2">
+                    <span class="badge rounded-pill" style="background-color: #8A99A8;">{{ player.position.value|capitalize }}</span>
+                    {% if player.active %}
+                        <span class="badge rounded-pill" style="background-color: #2E8B57;">Actif</span>
+                    {% else %}
+                        <span class="badge rounded-pill bg-secondary">Inactif</span>
+                    {% endif %}
+                </div>
+                <div class="text-muted small">
+                    {{ player.age }} ans
+                    &nbsp;·&nbsp; <i class="bi bi-envelope"></i> {{ player.email.toString }}
+                    &nbsp;·&nbsp; <i class="bi bi-telephone"></i> {{ player.phoneNumber.toString }}
+                </div>
+            </div>
+
+            <a href="{{ path('player_web_edit', {id: player.id.toString}) }}" class="btn btn-outline-secondary">
+                <i class="bi bi-pencil"></i> Modifier
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="h2 mb-0" style="color: #1B2A4A;">{{ matches|length }}</div>
+                <div class="text-muted small text-uppercase">Convocations</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="h2 mb-0" style="color: #1B2A4A;">{{ matches|filter(m => m.status.value == 'played')|length }}</div>
+                <div class="text-muted small text-uppercase">Matchs disputés (convoqué)</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center p-3">
+                <div class="h2 mb-0" style="color: #1B2A4A;">{{ matches|filter(m => m.status.value == 'scheduled')|length }}</div>
+                <div class="text-muted small text-uppercase">Matchs à venir</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <h5 class="px-4 pt-4 mb-3">Matchs</h5>
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                <tr style="background-color: #F4F6F8;">
+                    <th class="ps-4 py-3 text-uppercase small text-muted">Date</th>
+                    <th class="py-3 text-uppercase small text-muted">Match</th>
+                    <th class="py-3 text-uppercase small text-muted">Compétition</th>
+                    <th class="pe-4 py-3 text-uppercase small text-muted">Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for match in matches %}
+                    <tr>
+                        <td class="ps-4 py-3">{{ match.scheduledAt.toDateTimeImmutable|date('d/m/Y H:i') }}</td>
+                        <td class="py-3 fw-semibold">{{ match.homeClub.name }} vs {{ match.awayClub.name }}</td>
+                        <td class="py-3">{{ match.competitionName }}</td>
+                        <td class="pe-4 py-3">
+                            {% if match.status.value == 'cancelled' %}
+                                <span class="badge rounded-pill bg-danger">Annulé</span>
+                            {% elseif match.status.value == 'played' %}
+                                <span class="badge rounded-pill bg-secondary">Joué</span>
+                            {% else %}
+                                <span class="badge rounded-pill" style="background-color: #2E8B57;">Programmé</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center py-5 text-muted">Aucune convocation pour ce joueur.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
