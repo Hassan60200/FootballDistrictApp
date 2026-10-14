@@ -6,9 +6,9 @@ namespace App\Account\Infrastructure\Doctrine;
 
 use App\Account\Domain\Account;
 use App\Account\Domain\AccountId;
-use App\Account\Domain\AccountRepositoryInterface;
 use App\Account\Domain\Email;
 use App\Account\Domain\ProfileReference;
+use App\Account\Domain\Repository\AccountRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 final readonly class DoctrineAccountRepository implements AccountRepositoryInterface

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Account\Application\RegisterAccount;
+namespace App\Account\Application\Handler\RegisterAccount;
 
+use App\Account\Application\RegisterAccount\RegisterAccountCommand;
 use App\Account\Domain\Account;
 use App\Account\Domain\AccountId;
 use App\Account\Domain\Email;
