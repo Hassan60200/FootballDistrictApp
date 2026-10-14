@@ -3,6 +3,7 @@
 namespace App\Tests\Player\Domain;
 
 use App\Player\Domain\Email;
+use App\Player\Domain\PhoneNumber;
 use App\Player\Domain\Player;
 use App\Player\Domain\Position;
 use PHPUnit\Framework\TestCase;
@@ -17,6 +18,7 @@ final class PlayerTest extends TestCase
             age: 36,
             email: Email::fromString('karim@ca-venette.fr'),
             position: Position::FORWARD,
+            phoneNumber: PhoneNumber::fromString('06 12 34 56 78')
         );
 
         $this->assertTrue($player->isActive());
@@ -34,6 +36,7 @@ final class PlayerTest extends TestCase
             age: 37,
             email: Email::fromString('nouveau@ca-venette.fr'),
             position: Position::MIDFIELDER,
+            phoneNumber: PhoneNumber::fromString('06 12 34 56 78')
         );
 
         $this->assertSame(37, $player->getAge());
@@ -49,6 +52,7 @@ final class PlayerTest extends TestCase
             age: 36,
             email: Email::fromString('karim@ca-venette.fr'),
             position: Position::FORWARD,
+            phoneNumber: PhoneNumber::fromString('06 12 34 56 78')
         );
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Player\Application\Handler\RegisterPlayer;
 
 use App\Player\Domain\Email;
+use App\Player\Domain\PhoneNumber;
 use App\Player\Domain\Player;
 use App\Player\Domain\PlayerId;
 use App\Player\Domain\Repository\PlayerRepositoryInterface;
@@ -21,6 +22,7 @@ final class RegisterPlayerHandler
             age: $command->age,
             email: Email::fromString($command->email),
             position: $command->position,
+            phoneNumber: PhoneNumber::fromString($command->phoneNumber->toString())
         );
 
         $this->players->save($player);

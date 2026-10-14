@@ -27,6 +27,7 @@ final class PlayerController extends AbstractController
             age: $request->age,
             email: $request->email,
             position: $request->position,
+            phoneNumber: $request->phoneNumber,
         ));
 
         return $this->json(['id' => $playerId->toString()], 201);
