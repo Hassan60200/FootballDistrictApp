@@ -13,6 +13,10 @@ doctrine:
             player_phone_number: App\Player\Infrastructure\Doctrine\PhoneNumberType
             coach_email: App\Coach\Infrastructure\Doctrine\EmailType
             player_id_collection: App\Match\Infrastructure\Doctrine\PlayerIdCollectionType
+            account_id: App\Account\Infrastructure\Doctrine\AccountIdType
+            account_email: App\Account\Infrastructure\Doctrine\EmailType
+            account_password_hash: App\Account\Infrastructure\Doctrine\HashedPasswordType
+
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
@@ -52,6 +56,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Match/Domain'
                 prefix: 'App\Match\Domain'
                 alias: Match
+            Account:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Account/Domain'
+                prefix: 'App\Account\Domain'
+                alias: Account
 
 when@test:
     doctrine:

@@ -33,3 +33,12 @@ services:
 
     App\Coach\Domain\Repository\CoachRepositoryInterface:
         alias: App\Coach\Infrastructure\Repository\DoctrineCoachRepository
+
+    App\Account\Domain\Repository\AccountRepositoryInterface:
+        alias: App\Account\Infrastructure\Doctrine\DoctrineAccountRepository
+
+    App\Account\Domain\PasswordHasherInterface:
+        alias: App\Account\Infrastructure\Security\SymfonyPasswordHasher
+
+    App\Account\Domain\ProfileDirectoryInterface:
+        alias: App\Account\Infrastructure\Profile\RepositoryProfileDirectory
