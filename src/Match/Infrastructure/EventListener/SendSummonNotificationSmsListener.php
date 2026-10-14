@@ -10,15 +10,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Notifier\Exception\ExceptionInterface;
 use Symfony\Component\Notifier\Message\SmsMessage;
 use Symfony\Component\Notifier\TexterInterface;
+use function Symfony\Component\String\u;
 
 final class SendSummonNotificationSmsListener implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly MatchRepositoryInterface $matches,
+        private readonly MatchRepositoryInterface  $matches,
         private readonly PlayerRepositoryInterface $players,
-        private readonly TexterInterface $texter,
-        private readonly LoggerInterface $logger,
-    ) {}
+        private readonly TexterInterface           $texter,
+        private readonly LoggerInterface           $logger,
+    )
+    {
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -35,11 +38,14 @@ final class SendSummonNotificationSmsListener implements EventSubscriberInterfac
         }
 
         $text = sprintf(
-            "CA Venette - Convocation : %s vs %s le %s. En cas d'empechement, appelle ton coach.",
+            "CA Venette - Salut %s, tu es convoque : %s vs %s le %s. En cas d'empechement, appelle ton coach.",
+            $player->getFirstName(),
             $match->getHomeClub()->getName(),
             $match->getAwayClub()->getName(),
             $match->getScheduledAt()->toDateTimeImmutable()->format('d/m \a H:i'),
         );
+
+        $text = u($text)->ascii()->toString();
 
         try {
             $this->texter->send(
